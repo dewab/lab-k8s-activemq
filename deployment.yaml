@@ -1,20 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-name: active-mq
-labels:
-   app: active-mq
+  name: active-mq
+  labels:
+    app: active-mq
 spec:
-replicas: 1
-selector:
-   matchLabels:
-   app: active-mq
-template:
-   metadata:
-   labels:
-      app: active-mq
-   spec:
-   containers:
+  replicas: 1
+  containers:
       - image: dewab/lab-activq-mq
         name: active-mqƒs
         imagePullPolicy: Always
@@ -29,8 +21,7 @@ template:
         - name: active-creds
           mountPath: /home/alpine/apache-activemq-5.15.10/conf/jetty-realm.properties
           subPath: jetty-realm.properties
-        volumes:
-          - name: active-creds
-            secret:
-              secretName: creds
-        restartPolicy: Always
+  volumes:
+    - name: active-creds
+      secret:
+        secretName: creds
