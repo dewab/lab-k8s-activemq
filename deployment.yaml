@@ -1,27 +1,38 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Pod
 metadata:
   name: active-mq
   labels:
     app: active-mq
 spec:
-  replicas: 1
-  containers:
-      - image: dewab/lab-activq-mq
-        name: active-mqƒs
-        imagePullPolicy: Always
-        resources:
-          requests:
-              memory: 500Mi
-              cpu: 200m
-          limits:
-              memory: 1000Mi
-              cpu: 400m
-        volumeMounts:
-        - name: active-creds
-          mountPath: /home/alpine/apache-activemq-5.15.10/conf/jetty-realm.properties
-          subPath: jetty-realm.properties
   volumes:
-    - name: active-creds
-      secret:
-        secretName: creds
+    - name: active-mq-storage
+      persistentVolumeClaim:
+        claimName: active-mq-pvc
+
+  containers:
+    - name: active-mq
+      image: dewab/lab-activq-mq
+      imagePullPolicy: Always
+      ports:
+        - containerPort: 8161
+          name: dashboard
+        - containerPort: 61616
+          name: openwire
+        - containerPort: 5672
+          name: amqp
+        - containerPort: 61613
+          name: stomp
+        - containerPort: 1883
+          name: mqtt
+      volumeMounts:
+        - name: active-creds
+          mountPath: /home/alpine/apache-activemq-5.18.3/conf/jetty-realm.properties
+          subPath: jetty-realm.properties
+      resources:
+        requests:
+            memory: 500Mi
+            cpu: 200m
+        limits:
+            memory: 1000Mi
+            cpu: 400m
