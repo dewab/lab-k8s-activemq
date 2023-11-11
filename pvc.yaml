@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: active-mq-storagepv
+  name: active-mq-pvc
 spec:
   accessModes:
     - ReadWriteOnce
