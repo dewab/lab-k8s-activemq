@@ -12,7 +12,7 @@ spec:
 
   containers:
     - name: active-mq
-      image: dewab/lab-activq-mq
+      image: dewab/lab-activq-mq:main
       imagePullPolicy: Always
       ports:
         - containerPort: 8161
